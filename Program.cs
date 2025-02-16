@@ -1,3 +1,4 @@
+using CourseApp.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,7 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<DataContext>(options => {
-    options.UseSqlite();
+    var config = builder.Configuration;
+    var connectionString = config.GetConnectionString("database");
+    options.UseSqlite(connectionString);
 });
 
 var app = builder.Build();
