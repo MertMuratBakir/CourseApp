@@ -1,6 +1,3 @@
-/.vscode
-/bin
-/obj
-/obj/Debug/net8.0
-/obj/Debug
-/obj
+.vscode/
+bin/
+obj/
