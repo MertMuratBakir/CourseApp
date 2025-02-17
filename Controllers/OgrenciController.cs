@@ -1,6 +1,7 @@
 using CourseApp.Data;
+using CourseApp.Models;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Threading.Tasks;
 namespace CourseApp.Controllers 
 {
     public class OgrenciController: Controller
@@ -22,7 +23,7 @@ namespace CourseApp.Controllers
         {
             _context.Ogrenciler.Add(model);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home");
         }
     }
 }
