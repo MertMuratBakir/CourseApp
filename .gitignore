@@ -3,3 +3,5 @@ bin/
 obj/
 Database.db*
 CourseApp.sln
+CourseApp.csproj
+appsettings.json*
