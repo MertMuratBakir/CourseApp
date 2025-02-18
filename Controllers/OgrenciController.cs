@@ -1,9 +1,9 @@
 using CourseApp.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-namespace CourseApp.Controllers 
+namespace CourseApp.Controllers
 {
-    public class OgrenciController: Controller
+    public class OgrenciController : Controller
     {
 
         private readonly DataContext _context;
@@ -29,6 +29,24 @@ namespace CourseApp.Controllers
             _context.Ogrenciler.Add(model);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Ogrenci");
+        }
+
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                var ogr = await _context.Ogrenciler.FindAsync(id);
+
+                if (ogr == null)
+                {
+                    return NotFound();
+                }
+                return View(ogr);
+            }
         }
     }
 }
