@@ -1,13 +1,18 @@
 using CourseApp.Data;
-using CourseApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 namespace CourseApp.Controllers 
 {
     public class OgrenciController: Controller
     {
 
         private readonly DataContext _context;
+
+        public async Task<IActionResult> Index()
+        {
+            var ogrenciler = await _context.Ogrenciler.ToListAsync();
+            return View(ogrenciler);
+        }
 
         public OgrenciController(DataContext context)
         {
@@ -23,7 +28,7 @@ namespace CourseApp.Controllers
         {
             _context.Ogrenciler.Add(model);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Ogrenci");
         }
     }
 }
