@@ -4,4 +4,6 @@ obj/
 Database.db*
 CourseApp.sln
 CourseApp.csproj
-appsettings.json*
+appsettings.json
+appsettings.Development.json
+appsettings.*
