@@ -1,6 +1,7 @@
 using CourseApp.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
 namespace CourseApp.Controllers
 {
     public class OgrenciController : Controller
@@ -47,6 +48,39 @@ namespace CourseApp.Controllers
                 }
                 return View(ogr);
             }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Ogrenci Model)
+        {
+            if (id != Model.OgrenciId)
+            {
+                return NotFound();
+            }
+            if(ModelState.IsValid) 
+            {
+                try 
+                {
+                    _context.Update(Model);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if(!_context.Ogrenciler.Any(o => o.OgrenciId == Model.OgrenciId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction("Index", "Ogrenci");
+            }
+            
+            return View(Model);
+
         }
     }
 }
