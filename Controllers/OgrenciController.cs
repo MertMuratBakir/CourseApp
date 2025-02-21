@@ -32,6 +32,7 @@ namespace CourseApp.Controllers
             return RedirectToAction("Index", "Ogrenci");
         }
 
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -58,16 +59,16 @@ namespace CourseApp.Controllers
             {
                 return NotFound();
             }
-            if(ModelState.IsValid) 
+            if (ModelState.IsValid)
             {
-                try 
+                try
                 {
                     _context.Update(Model);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if(!_context.Ogrenciler.Any(o => o.OgrenciId == Model.OgrenciId))
+                    if (!_context.Ogrenciler.Any(o => o.OgrenciId == Model.OgrenciId))
                     {
                         return NotFound();
                     }
@@ -78,9 +79,44 @@ namespace CourseApp.Controllers
                 }
                 return RedirectToAction("Index", "Ogrenci");
             }
-            
+
             return View(Model);
 
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                var ogrenci = await _context.Ogrenciler.FindAsync(id);
+
+                if (ogrenci == null)
+                {
+                    return NotFound();
+                }
+                return View(ogrenci);
+            }
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete([FromForm] int id)
+        {
+            var ogrenci = await _context.Ogrenciler.FindAsync(id);
+            if (ogrenci == null)
+            {
+                return NotFound();
+            }
+            _context.Ogrenciler.Remove(ogrenci);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Ogrenci");
+        }
+
+
     }
 }
