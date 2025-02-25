@@ -37,5 +37,46 @@ namespace CourseApp.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+        
+        [HttpGet]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var KursKayit = await _context.Kurskayitlari
+                .Include(x => x.Ogrenci)
+                .Include(x => x.Kurs)
+                .FirstOrDefaultAsync(x => x.KayitId == id);
+
+            if (KursKayit == null)
+            {
+                return NotFound();
+            }
+
+            return View(KursKayit);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var kursKayit = await _context.Kurskayitlari.FindAsync(id);
+
+            if (kursKayit == null)
+            {
+                return NotFound();
+            }
+
+            _context.Kurskayitlari.Remove(kursKayit);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
     }
 }
+
+    
+
+
