@@ -7,3 +7,4 @@ CourseApp.csproj
 appsettings.json
 appsettings.Development.json
 appsettings.*
+Migrations/
