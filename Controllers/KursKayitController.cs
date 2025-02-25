@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CourseApp.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,9 +13,14 @@ namespace CourseApp.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var kursKayitlari = await 
+            _context.Kurskayitlari
+            .Include(x => x.Ogrenci)
+            .Include(x => x.Kurs)
+            .ToListAsync();
+            return View(kursKayitlari);
         }
         public async Task<IActionResult> Create()
         {
