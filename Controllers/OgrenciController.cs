@@ -114,9 +114,7 @@ namespace CourseApp.Controllers
             }
             _context.Ogrenciler.Remove(ogrenci);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "Ogrenci");
+            return RedirectToAction("Index");
         }
-
-
     }
 }
