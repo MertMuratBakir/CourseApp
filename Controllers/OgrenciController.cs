@@ -41,7 +41,11 @@ namespace CourseApp.Controllers
             }
             else
             {
-                var ogr = await _context.Ogrenciler.FindAsync(id);
+                var ogr = await _context
+                                .Ogrenciler
+                                .Include(o => o.KursKayitlari)
+                                .ThenInclude(o => o.Kurs)
+                                .FirstOrDefaultAsync(o => o.OgrenciId == id);
 
                 if (ogr == null)
                 {
