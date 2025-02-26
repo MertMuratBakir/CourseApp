@@ -9,16 +9,17 @@ namespace CourseApp.Controllers
 
         private readonly DataContext _context;
 
+        public OgrenciController(DataContext context)
+        {
+            _context = context;
+        }
+
         public async Task<IActionResult> Index()
         {
             var ogrenciler = await _context.Ogrenciler.ToListAsync();
             return View(ogrenciler);
         }
 
-        public OgrenciController(DataContext context)
-        {
-            _context = context;
-        }
         public IActionResult Create()
         {
             return View();
