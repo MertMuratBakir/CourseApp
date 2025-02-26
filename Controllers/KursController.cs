@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CourseApp.Controllers
 {
-    public class KursController:Controller
+    public class KursController : Controller
     {
         private readonly DataContext _context;
         public KursController(DataContext context)
@@ -38,7 +38,11 @@ namespace CourseApp.Controllers
             }
             else
             {
-                var kurs = await _context.Kurslar.FindAsync(id);
+                var kurs = await _context
+                                .Kurslar
+                                .Include(x => x.KursKayitlari)
+                                .ThenInclude(x => x.Ogrenci)
+                                .FirstOrDefaultAsync(x => x.KursId == id);
 
                 if (kurs == null)
                 {
@@ -96,7 +100,5 @@ namespace CourseApp.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Kurs");
         }
-
-
-    } 
+    }
 }
