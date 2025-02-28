@@ -9,6 +9,7 @@
                 <th style="width: 100px;" class="text-center">@Html.DisplayNameFor(m => m.OgretmenId)</th>
                 <th>@Html.DisplayNameFor(m => m.Ad)</th>
                 <th>@Html.DisplayNameFor(m => m.Soyad)</th>
+                <th>@Html.DisplayNameFor(m => m.BaslamaTarihi)</th>
                 <th style="width: 150px;" class="text-center">İşlemler</th>
             </tr>
         </thead>
@@ -20,6 +21,7 @@
                 <td class="text-center">@Html.DisplayFor(modelItem => item.OgretmenId)</td>
                 <td>@Html.DisplayFor(modelItem => item.Ad)</td>
                 <td>@Html.DisplayFor(modelItem => item.Soyad)</td>
+                <td>@Html.DisplayFor(modelItem => item.BaslamaTarihi)</td>
                 <td class="text-center">
                     <a asp-action="Edit" asp-route-id="@item.OgretmenId"
                         class="btn btn-sm btn-primary">Edit</a>
