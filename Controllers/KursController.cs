@@ -1,5 +1,6 @@
 using CourseApp.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace CourseApp.Controllers
@@ -13,11 +14,12 @@ namespace CourseApp.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var Kurslar = await _context.Kurslar.ToListAsync();
+            var Kurslar = await _context.Kurslar.Include(k => k.Ogretmen).ToListAsync();
             return View(Kurslar);
         }
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ViewBag.Ogretmenler = new SelectList(await _context.Ogretmenler.ToListAsync(), "OgretmenId", "AdSoyad");
             return View();
         }
 
@@ -48,6 +50,10 @@ namespace CourseApp.Controllers
                 {
                     return NotFound();
                 }
+
+                ViewBag.Ogretmenler = new SelectList(await _context.Ogretmenler.ToListAsync(), "OgretmenId", "AdSoyad");
+
+
                 return View(kurs);
             }
         }
