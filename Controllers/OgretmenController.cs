@@ -42,17 +42,15 @@ namespace CourseApp.Controllers
             }
             else
             {
-                var ogr = await _context
+                var entity = await _context
                                 .Ogretmenler
-                                .Include(o => o.Kurslar)
-                                .ThenInclude(o => o.KursKayitlari)
                                 .FirstOrDefaultAsync(o => o.OgretmenId == id);
 
-                if (ogr == null)
+                if (entity == null)
                 {
                     return NotFound();
                 }
-                return View(ogr);
+                return View(entity);
             }
         }
 
