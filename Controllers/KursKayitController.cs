@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 namespace CourseApp.Controllers
 {
-    public class KursKayitController:Controller
+    public class KursKayitController : Controller
     {
         private readonly DataContext _context;
         public KursKayitController(DataContext context)
@@ -15,7 +15,7 @@ namespace CourseApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var kursKayitlari = await 
+            var kursKayitlari = await
             _context.Kurskayitlari
             .Include(x => x.Ogrenci)
             .Include(x => x.Kurs)
@@ -37,7 +37,48 @@ namespace CourseApp.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
-        
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var kursKayit = await _context.Kurskayitlari
+                .Include(x => x.Ogrenci)
+                .Include(x => x.Kurs)
+                .FirstOrDefaultAsync(k => k.KayitId == id);
+
+            if (kursKayit == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.Ogrenciler = new SelectList(await _context.Ogrenciler.ToListAsync(), "OgrenciId", "AdSoyad", kursKayit.OgrenciId);
+            ViewBag.Kurslar = new SelectList(await _context.Kurslar.ToListAsync(), "KursId", "Baslik", kursKayit.KursId);
+
+            return View(kursKayit);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, KursKayit Model)
+        {
+            if (id != Model.KayitId)
+            {
+                return NotFound();
+            }
+            else
+            {
+                _context.Update(Model);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+        }
+
+
         [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -77,6 +118,6 @@ namespace CourseApp.Controllers
     }
 }
 
-    
+
 
 
